@@ -1,6 +1,7 @@
 from queue import PriorityQueue
 from Board import Board
 import PySimpleGUI as sg
+import json
 
 sg.theme('DarkAmber')
 menuLayout = [[sg.Text("What would you like to do?")],
@@ -9,18 +10,29 @@ menuLayout = [[sg.Text("What would you like to do?")],
 
 checkInLayout = [[sg.Text("Player Check Ins")]]
 
+createPlayerLayout = [[sg.Text('Enter new player information')],
+                      [sg.Text('First Name', size=(12, 1)), sg.In(k='firstName', size=(10, 1))],
+                      [sg.Text('Last Name', size=(12, 1)), sg.In(k='lastName', size=(10, 1))],
+                      sg.Button("Submit")]
+
 # Create a (list) layout of layouts
 layout = [[sg.Column(menuLayout, visible=True, key='menu'),
-           sg.Column(checkInLayout, visible=False, key='check in')]]
+           sg.Column(checkInLayout, visible=False, key='check in'),
+           sg.Column(createPlayerLayout, visible=False, key='create player')]]
 
 window = sg.Window("Badminton Board Maker", layout, size=(500, 500))
 
 
-def readPlayerFile():
-    # Read and process players.txt
-    playerFile = open('players.txt', 'r')
-    content = playerFile.readline()
-    print(content)
+def createPlayer():
+    """
+    Use the inforamtion provided to create a player class
+    Convert the player information to a json string to put into a json file
+    Version 1 information:
+        First Name
+        Last Name
+    :return:
+    """
+    print("e")
 
 
 if __name__ == '__main__':
@@ -32,12 +44,15 @@ if __name__ == '__main__':
 
         if event in (None, 'Exit'):
             break
+
+        # --------------------------------CHECK IN PAGE-------------------------------------------------------
         if event == 'Check-In Players':
             # Change menu layout to invis and set check in layout to visible
             window['menu'].update(visible=False)
-            layout = menuLayout
             window['check in'].update(visible=True)
 
-            # Process actions here
-
+        # --------------------------------REGISTER PLAYER PAGE-------------------------------------------------------
+        elif event == 'Register New Player':
+            window['menu'].update(visible=False)
+            window['create player'].update(visible=True)
     window.close()
