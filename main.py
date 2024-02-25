@@ -13,7 +13,7 @@ checkInLayout = [[sg.Text("Player Check Ins")]]
 createPlayerLayout = [[sg.Text('Enter new player information')],
                       [sg.Text('First Name', size=(12, 1)), sg.In(k='firstName', size=(10, 1))],
                       [sg.Text('Last Name', size=(12, 1)), sg.In(k='lastName', size=(10, 1))],
-                      sg.Button("Submit")]
+                      [sg.Button("Submit Player")]]
 
 # Create a (list) layout of layouts
 layout = [[sg.Column(menuLayout, visible=True, key='menu'),
@@ -40,7 +40,7 @@ if __name__ == '__main__':
 
     while True:
         event, values = window.read()
-        print(event, values)
+        print(event, values)  # Values is a dict
 
         if event in (None, 'Exit'):
             break
@@ -52,7 +52,12 @@ if __name__ == '__main__':
             window['check in'].update(visible=True)
 
         # --------------------------------REGISTER PLAYER PAGE-------------------------------------------------------
-        elif event == 'Register New Player':
+        if event == 'Register New Player':
             window['menu'].update(visible=False)
             window['create player'].update(visible=True)
+
+        if event == 'Submit Player':
+            # Create a player class
+            new Player()
+
     window.close()
