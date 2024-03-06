@@ -2,6 +2,8 @@ from queue import PriorityQueue
 from Board import Board
 import PySimpleGUI as sg
 import json
+import pandas as pd
+from Player import Player
 
 sg.theme('DarkAmber')
 menuLayout = [[sg.Text("What would you like to do?")],
@@ -35,9 +37,27 @@ def createPlayer():
     print("e")
 
 
+def readMembershipFile():
+    """
+    Reads the Excel spreadsheet of players who have signed up through the membership form. Should be found in the same directory
+    For each player, Create a player class and add them to the list of all players
+    That list of all players will be displayed, so they're in the system.
+    :return: List of players
+    """
+    df = pd.read_excel('membership.xlsx')
+    # Create a player class for each player read
+    players = []
+    for i in df.index:
+        #     print(df['First name'][i], df['Last name'][i])
+        player = Player(df['First name'][i], df['Last name'][i], True)
+        players.append(player)
+    for p in players:
+        print(p.firstname)
+
 if __name__ == '__main__':
     # Create the Window using the main menu layout
-
+    # Run the mmebership read function
+    memberList = readMembershipFile()
     while True:
         event, values = window.read()
         print(event, values)  # Values is a dict
@@ -51,13 +71,9 @@ if __name__ == '__main__':
             window['menu'].update(visible=False)
             window['check in'].update(visible=True)
 
-        # --------------------------------REGISTER PLAYER PAGE-------------------------------------------------------
+        # --------------------------------REGISTER CASUAL PLAYER PAGE--------------------------------------------------
         if event == 'Register New Player':
             window['menu'].update(visible=False)
             window['create player'].update(visible=True)
-
-        if event == 'Submit Player':
-            # Create a player class
-            new Player()
 
     window.close()
